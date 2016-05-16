@@ -12,4 +12,18 @@
     tools:context="com.theforce.shoppingassistant.NewItemActivity"
     tools:showIn="@layout/activity_new_item">
 
+    <EditText
+        android:id="@+id/search_field"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Skriv in din vara"
+        android:inputType="text" />
+
+    <ListView
+        android:id="@+id/items_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_field"
+        />
+
 </RelativeLayout>

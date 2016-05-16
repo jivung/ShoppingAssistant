@@ -20,6 +20,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
 
@@ -32,7 +33,6 @@ public class ShoppingListActivity extends AppCompatActivity {
                 "Bröd",
                 "Mjöl"
         };
-
 
         final ArrayList<String> list = new ArrayList<String>();
         for (int i = 0; i < values.length; ++i) {
