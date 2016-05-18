@@ -54,7 +54,22 @@ public class NewItemActivity extends AppCompatActivity {
                 "Ost",
                 "Ägg",
                 "Bröd",
-                "Mjöl"
+                "Mjöl",
+                "a",
+                "b",
+                "c",
+                "d",
+                "e",
+                "a",
+                "b",
+                "c",
+                "d",
+                "e",
+                "a",
+                "b",
+                "c",
+                "d",
+                "e"
         };
 
         final ArrayList<String> list = new ArrayList<String>();
@@ -129,11 +144,11 @@ public class NewItemActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
         Log.d("test", "button works!");
     }
-    MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         if(requestCode == 0){
             if(resultCode == RESULT_OK){
-
+                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep);
                 mp.start();
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
