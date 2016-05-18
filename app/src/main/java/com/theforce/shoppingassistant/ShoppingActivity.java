@@ -3,7 +3,10 @@ package com.theforce.shoppingassistant;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,18 +16,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ShoppingListActivity extends AppCompatActivity {
+public class ShoppingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shopping_list);
+        setContentView(R.layout.activity_shopping);
 
         final ListView listview = (ListView) findViewById(R.id.listView);
         String[] values = new String[] {
-                "+ Lägg till ny vara..",
-                "Mjölk",
                 "Ost",
                 "Ägg",
                 "Bröd",
@@ -43,10 +43,11 @@ public class ShoppingListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 if(position ==0) {
-                    newItem();
+
                 }
             }
         });
+
     }
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
@@ -74,14 +75,6 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     }
 
-    public void newItem(){
-        Intent intent = new Intent(this, NewItemActivity.class);
-        startActivity(intent);
-    }
 
-    public void startShopping(View view){
-        Intent intent = new Intent(this, ShoppingActivity.class);
-        startActivity(intent);
-    }
 
 }
