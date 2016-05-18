@@ -1,6 +1,8 @@
 package com.theforce.shoppingassistant;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,11 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+
+
+
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +34,12 @@ public class NewItemActivity extends AppCompatActivity {
     EditText searchField;
     ArrayList<HashMap<String, String>> productList;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -36,7 +49,7 @@ public class NewItemActivity extends AppCompatActivity {
         searchField = (EditText) findViewById(R.id.search_field);
 
         final ListView listview = (ListView) findViewById(R.id.items_list);
-        String[] values = new String[] {
+        String[] values = new String[]{
                 "Mjölk",
                 "Ost",
                 "Ägg",
@@ -55,7 +68,7 @@ public class NewItemActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                if(position ==0) {
+                if (position == 0) {
 
                 }
             }
@@ -84,6 +97,7 @@ public class NewItemActivity extends AppCompatActivity {
 
     }
 
+
     private class StableArrayAdapter extends ArrayAdapter<String> {
 
         HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
@@ -108,5 +122,28 @@ public class NewItemActivity extends AppCompatActivity {
         }
 
     }
+
+    public void scanNow(View view) {
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+        intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, 0);
+        Log.d("test", "button works!");
+    }
+    MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        if(requestCode == 0){
+            if(resultCode == RESULT_OK){
+
+                mp.start();
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                Log.i("xZing", "contents: "+contents+" format: "+format); // Handle successful scan
+            }
+            else if(resultCode == RESULT_CANCELED){ // Handle cancel
+                Log.i("xZing", "Cancelled");
+            }
+        }
+    }
+
 
 }
