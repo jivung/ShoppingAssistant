@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         //set content view AFTER ABOVE sequence (to avoid crash)
         setContentView(R.layout.activity_main);
 
+        // CALLE WAS HERE
+
     }
 
     @Override
@@ -56,4 +58,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ShoppingListActivity.class);
         startActivity(intent);
     }
+
 }
