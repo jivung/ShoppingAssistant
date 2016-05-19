@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class NewItemActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     EditText searchField;
     ArrayList<HashMap<String, String>> productList;
-
+    private BarcodeTranslationDatabase dtb;
+    private MediaPlayer mp;
 
 
     @Override
@@ -44,6 +46,9 @@ public class NewItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_item);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        dtb = new BarcodeTranslationDatabase();
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+
 
 
         searchField = (EditText) findViewById(R.id.search_field);
@@ -54,22 +59,7 @@ public class NewItemActivity extends AppCompatActivity {
                 "Ost",
                 "Ägg",
                 "Bröd",
-                "Mjöl",
-                "a",
-                "b",
-                "c",
-                "d",
-                "e",
-                "a",
-                "b",
-                "c",
-                "d",
-                "e",
-                "a",
-                "b",
-                "c",
-                "d",
-                "e"
+                "Mjöl"
         };
 
         final ArrayList<String> list = new ArrayList<String>();
@@ -141,6 +131,7 @@ public class NewItemActivity extends AppCompatActivity {
     public void scanNow(View view) {
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
         intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
+
         startActivityForResult(intent, 0);
         Log.d("test", "button works!");
     }
@@ -148,17 +139,15 @@ public class NewItemActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         if(requestCode == 0){
             if(resultCode == RESULT_OK){
-                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep);
                 mp.start();
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                Log.i("xZing", "contents: "+contents+" format: "+format); // Handle successful scan
+                System.out.println(dtb.getNameFromBarcode(contents)); //Skicka dtb.getNameFromBarcode(contents) till Mickes klass
             }
             else if(resultCode == RESULT_CANCELED){ // Handle cancel
                 Log.i("xZing", "Cancelled");
             }
         }
     }
-
 
 }
