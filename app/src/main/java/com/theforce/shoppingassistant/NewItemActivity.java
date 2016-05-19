@@ -1,6 +1,7 @@
 package com.theforce.shoppingassistant;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,14 +25,14 @@ public class NewItemActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     EditText searchField;
     ArrayList<HashMap<String, String>> productList;
+    private ShoppingList shoppingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
 
+        shoppingList = (ShoppingList) getIntent().getSerializableExtra("shoppingList");
 
         searchField = (EditText) findViewById(R.id.search_field);
 
@@ -48,18 +49,17 @@ public class NewItemActivity extends AppCompatActivity {
         for (int i = 0; i < values.length; ++i) {
             list.add(values[i]);
         }
-        adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
+        adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
 
+        // Trycker på vara
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                if(position ==0) {
-
-                }
+                addItem("Yeman");
             }
         });
+
+        Intent intent = new Intent(this, ShoppingListActivity.class);
 
         searchField.addTextChangedListener(new TextWatcher() {
 
@@ -107,6 +107,13 @@ public class NewItemActivity extends AppCompatActivity {
             return true;
         }
 
+    }
+
+    private void addItem(String item){
+        shoppingList.addEntry(item);
+        Intent intent = new Intent(this, ShoppingListActivity.class);
+        intent.putExtra("shoppingList", shoppingList);
+        startActivity(intent);
     }
 
 }
