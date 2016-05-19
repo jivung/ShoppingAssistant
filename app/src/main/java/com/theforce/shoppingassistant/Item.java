@@ -1,24 +1,23 @@
 package com.theforce.shoppingassistant;
 
-/**
- * Created by Micke on 2016-04-24.
- */
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
 
     private String name;
-    private int ID;
+    private String category;
 
-    public Item(String name, int ID){
+    public Item(String name, String category){
         this.name = name;
-        this.ID = ID;
+        this.category = category;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getID() {
-        return ID;
+    public String getCategory() {
+        return category;
     }
 
 }

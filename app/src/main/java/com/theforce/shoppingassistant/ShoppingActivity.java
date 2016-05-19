@@ -221,7 +221,7 @@ public class ShoppingActivity extends AppCompatActivity {
 
            /* if (results.contains(shoppingList.get(0).toString().toLowerCase() )) {
                 vara1.setChecked(true);
-                String toSpeak = shoppingList.get(0).toString().toLowerCase() + "checked. Next item on the list is" + shoppingList.get(1).toString().toLowerCase();
+                String toSpeak = shoppingList.get(0).toString().toLowerCase() + "checked. Next list_item on the list is" + shoppingList.get(1).toString().toLowerCase();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ttsGreater21(toSpeak);
                 } else {
@@ -230,7 +230,7 @@ public class ShoppingActivity extends AppCompatActivity {
 
             } else if (results.contains(shoppingList.get(1).toString().toLowerCase())){
                 vara2.setChecked(true);
-                String toSpeak = shoppingList.get(1).toString().toLowerCase() + "checked. Next item on the list is" + shoppingList.get(2).toString().toLowerCase();
+                String toSpeak = shoppingList.get(1).toString().toLowerCase() + "checked. Next list_item on the list is" + shoppingList.get(2).toString().toLowerCase();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ttsGreater21(toSpeak);
                 } else {
@@ -248,7 +248,7 @@ public class ShoppingActivity extends AppCompatActivity {
                 }
             }else if (results.contains(shoppingList.get(2).toString().toLowerCase())){
                 vara3.setChecked(true);
-                String toSpeak = shoppingList.get(2).toString().toLowerCase() + "checked. Next item on the list is" + shoppingList.get(3).toString().toLowerCase();
+                String toSpeak = shoppingList.get(2).toString().toLowerCase() + "checked. Next list_item on the list is" + shoppingList.get(3).toString().toLowerCase();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ttsGreater21(toSpeak);
                 } else {
