@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +26,7 @@ public class NewItemActivity extends AppCompatActivity {
 
     private BarcodeTranslationDatabase dtb;
     private MediaPlayer mp;
+    private Toolbar toolbar;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -31,8 +34,9 @@ public class NewItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_item);
 
         // Toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
 
         searchField = (EditText) findViewById(R.id.search_field);
         final ListView listView = (ListView) findViewById(R.id.items_list);
@@ -73,16 +77,29 @@ public class NewItemActivity extends AppCompatActivity {
     }
 
     private void addItem(Item item){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.new_item, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_scan:
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
+                startActivityForResult(intent, 0);
+                Log.d("test", "Inne i switch");
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addItem(String item){
         Intent intent = new Intent(this, ShoppingListActivity.class);
         intent.putExtra("newItem", item);
         startActivity(intent);
-    }
-
-    public void scanNow(View view) {
-        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-        intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
-        startActivityForResult(intent, 0);
-        Log.d("test", "button works!");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
