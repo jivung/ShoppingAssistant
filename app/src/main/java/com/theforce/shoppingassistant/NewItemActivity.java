@@ -1,20 +1,31 @@
 package com.theforce.shoppingassistant;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NewItemActivity extends AppCompatActivity {
 
@@ -41,7 +52,7 @@ public class NewItemActivity extends AppCompatActivity {
 
         // Barcode
         dtb = new BarcodeTranslationDatabase();
-        mp = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.check);
 
         // Listan
         items = new ArrayList<>();
@@ -106,10 +117,51 @@ public class NewItemActivity extends AppCompatActivity {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
                 System.out.println(dtb.getNameFromBarcode(contents)); //Skicka dtb.getNameFromBarcode(contents) till Mickes klass
+                showAlertAdded(dtb.getNameFromBarcode(contents));
             } else if(resultCode == RESULT_CANCELED){ // Handle cancel
                 Log.i("xZing", "Cancelled");
             }
         }
     }
+
+    public void showAlertAdded(String productName){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog dialog = builder.create();
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.alert_added_layout, null);
+        dialog.setView(dialogLayout);
+       // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setTitle("Succcesfully added "+ productName);
+        dialog.show();
+
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+                ImageView image = (ImageView) dialog.findViewById(R.id.addedAlertImage);
+                Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.iconv2);
+                float imageWidthInPX = (float)image.getWidth();
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Math.round(imageWidthInPX),
+                        Math.round(imageWidthInPX * (float)icon.getHeight() / (float)icon.getWidth()));
+                image.setLayoutParams(layoutParams);
+
+
+            }
+        });
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                dialog.dismiss(); // when the task active then close the dialog
+                t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+            }
+        }, 1500); // after 2 second (or 2000 miliseconds), the task will be active.
+
+
+    }
+
 
 }
