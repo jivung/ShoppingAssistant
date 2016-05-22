@@ -10,7 +10,9 @@ public class BarcodeTranslationDatabase {
 
     public BarcodeTranslationDatabase() {
         database = new ArrayList<SearchObject>();
-        database.add(0, new SearchObject("Bulgur", "7340083436680"));
+        addBarcode("Bulgur", "7340083436680");
+        addBarcode("Aqua Nobel", "7350069768032");
+        addBarcode("Frasvafflor", "7310470030319");
         //Lägg till fler objekt
     }
 
@@ -20,13 +22,13 @@ public class BarcodeTranslationDatabase {
             name = object.getName(barcode);
         }
         if(name != null){
-            return "Namnet på produkten är: " + name;
+            return name;
         } else {
-            return "Produkt med nummer "+ barcode + " - hittades ej i databasen";
+            return "product with number " + barcode;
         }
     }
 
-    public void addBarcode(String barcode, String name){
+    public void addBarcode(String name, String barcode){
         database.add(database.size(), new SearchObject(name, barcode));
     }
 }
