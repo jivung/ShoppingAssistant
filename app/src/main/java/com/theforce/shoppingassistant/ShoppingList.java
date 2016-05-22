@@ -3,6 +3,7 @@ package com.theforce.shoppingassistant;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Micke on 2016-04-24.

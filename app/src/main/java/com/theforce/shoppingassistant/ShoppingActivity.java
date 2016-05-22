@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,13 +35,16 @@ public class ShoppingActivity extends AppCompatActivity {
     private ArrayList<Item> items;
     private ItemsAdapter adapter;
 
-    ListView lv;
+    ListView listView;
     static final int check = 1111;
     android.speech.tts.TextToSpeech t1;
     private Sensor mySensor;
     private SensorManager mSensorManager;
     private MediaPlayer mySound2;
     private long lastUpdate;
+    Item currentItem;
+    TextView currentItemName;
+    TextView currentItemCategory;
 
     private float last_x = 0;
     private float last_y = 0;
@@ -56,13 +60,19 @@ public class ShoppingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
-        final ListView listView = (ListView) findViewById(R.id.listView);
+        currentItemName = (TextView) findViewById(R.id.currentItemName);
+        currentItemCategory = (TextView) findViewById(R.id.currentItemCategory);
+        listView = (ListView) findViewById(R.id.listView);
 
         Bundle extra = getIntent().getBundleExtra("extra");
         items = (ArrayList<Item>) extra.getSerializable("items");
+        currentItem = items.get(0);
+        currentItemName.setText(currentItem.getName());
+        currentItemCategory.setText(currentItem.getCategory());
+        items.remove(0);
 
         // Adapter
-        adapter = new ItemsAdapter(this, items);
+        adapter = new ItemsAdapter(this, R.layout.list_item_check, items);
         listView.setAdapter(adapter);
 
         // CALLES SKIT
@@ -124,6 +134,7 @@ public class ShoppingActivity extends AppCompatActivity {
         //vara4.setText(vara14);
 
     }
+
 
     /**
      * Interface for shake gesture.
@@ -279,6 +290,21 @@ public class ShoppingActivity extends AppCompatActivity {
         super.onPause();
         mSensorManager.unregisterListener(mSensorListener);
 
+
+    }
+
+    public void itemChecked(View view){
+
+
+
+        adapter.itemChecked(listView, currentItem);
+
+        adapter.add(currentItem);
+
+        items = adapter.getFilteredList();
+        currentItem = items.get(0);
+        currentItemName.setText(currentItem.getName());
+        currentItemCategory.setText(currentItem.getCategory());
 
     }
 

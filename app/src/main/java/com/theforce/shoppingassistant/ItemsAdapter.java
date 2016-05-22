@@ -4,9 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,12 +25,14 @@ public class ItemsAdapter extends ArrayAdapter<Item> implements Filterable{
     ArrayList<Item> origShoppingList = null;
     ItemFilter itemFilter;
     Context context;
+    int layout;
 
-    public ItemsAdapter(Context context, ArrayList<Item> shoppingList) {
-        super(context,  R.layout.list_item, shoppingList);
+    public ItemsAdapter(Context context, int layout, ArrayList<Item> shoppingList) {
+        super(context,  layout, shoppingList);
         this.context = context;
         this.shoppingList = shoppingList;
         this.origShoppingList = shoppingList;
+        this.layout = layout;
     }
 
     public int getCount() {
@@ -50,14 +56,18 @@ public class ItemsAdapter extends ArrayAdapter<Item> implements Filterable{
         Item item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
         }
         // Lookup view for data population
         TextView itemName = (TextView) convertView.findViewById(R.id.itemName);
         TextView itemCategory = (TextView) convertView.findViewById(R.id.itemCategory);
+        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
         // Populate the data into the template view using the data object
         itemName.setText(item.getName());
         itemCategory.setText(item.getCategory());
+        if(checkBox != null){
+            checkBox.setChecked(item.isChecked());
+        }
         // Return the completed view to render on screen
         return convertView;
     }
@@ -100,6 +110,43 @@ public class ItemsAdapter extends ArrayAdapter<Item> implements Filterable{
                 notifyDataSetChanged();
             }
         }
+    }
+
+    public void itemChecked (ListView listView, Item currentItem) {
+
+        final int size = shoppingList.size();
+
+        final ArrayList<Item> clonedList = new ArrayList<Item>(shoppingList.size());
+        for (Item dog : shoppingList) {
+            clonedList.add(new Item(dog));
+        }
+
+        for(int i=0; i<size; i++){
+
+            final View view = listView.getChildAt(i);
+            int duration = 300;
+            int direction = -(view.getHeight());
+            final int yo = i;
+
+            Animation animation = new TranslateAnimation(0, 0, 0, direction);
+            animation.setDuration(duration);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                public void onAnimationStart (Animation animation) {}
+                public void onAnimationRepeat (Animation animation) {}
+                public void onAnimationEnd (Animation animation) {
+                    view.clearAnimation();
+                    remove(shoppingList.get(yo));
+                    if(yo<size-1) {
+                        Item newItem = clonedList.get(yo+1);
+                        insert(newItem, yo);
+                    }
+                }
+            });
+            view.startAnimation(animation);
+        }
+
+
+
     }
 
 }

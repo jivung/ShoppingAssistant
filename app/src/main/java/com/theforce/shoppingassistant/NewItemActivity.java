@@ -12,11 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewItemActivity extends AppCompatActivity {
 
@@ -55,7 +53,7 @@ public class NewItemActivity extends AppCompatActivity {
         items.add(new Item("Egg", "Dairy"));
 
         // Adapter
-        adapter = new ItemsAdapter(this, items);
+        adapter = new ItemsAdapter(this, R.layout.list_item, items);
         listView.setAdapter(adapter);
 
         // Vald vara
@@ -76,7 +74,6 @@ public class NewItemActivity extends AppCompatActivity {
 
     }
 
-    private void addItem(Item item){
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.new_item, menu);
@@ -96,7 +93,7 @@ public class NewItemActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addItem(String item){
+    private void addItem(Item item){
         Intent intent = new Intent(this, ShoppingListActivity.class);
         intent.putExtra("newItem", item);
         startActivity(intent);

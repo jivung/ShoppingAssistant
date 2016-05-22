@@ -30,12 +30,12 @@ public class ShoppingListActivity extends AppCompatActivity {
         items.add(new Item("Milk", "Dairy"));
         items.add(new Item("Cheese", "Dairy"));
         items.add(new Item("Apples", "Fruit"));
-        items.add(new Item("Bananas", "Fruit"));
-        items.add(new Item("Chicken", "Meat"));
-        items.add(new Item("Egg", "Dairy"));
+        //items.add(new Item("Bananas", "Fruit"));
+        //items.add(new Item("Chicken", "Meat"));
+        //items.add(new Item("Egg", "Dairy"));
 
         // Adapter
-        adapter = new ItemsAdapter(this, items);
+        adapter = new ItemsAdapter(this, R.layout.list_item, items);
         listView.setAdapter(adapter);
 
         // Lägg till ny vara
