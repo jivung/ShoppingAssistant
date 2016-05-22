@@ -20,4 +20,8 @@ public class Item implements Serializable {
         return category;
     }
 
+    public void print(){
+        System.out.println(name + " - " + category);
+    }
+
 }

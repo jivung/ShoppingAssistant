@@ -30,7 +30,8 @@ import java.util.TimerTask;
 
 public class NewItemActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Item> items;
+    private ItemsAdapter adapter;
     private EditText searchField;
 
     private BarcodeTranslationDatabase dtb;
@@ -55,19 +56,22 @@ public class NewItemActivity extends AppCompatActivity {
         mp = MediaPlayer.create(getApplicationContext(), R.raw.check);
 
         // Listan
-        final ArrayList<String> list = new ArrayList<String>();
-        list.add("Apples");
-        list.add("Milk");
-        list.add("Cheese");
+        items = new ArrayList<>();
+        items.add(new Item("Milk", "Dairy"));
+        items.add(new Item("Cheese", "Dairy"));
+        items.add(new Item("Apples", "Fruit"));
+        items.add(new Item("Bananas", "Fruit"));
+        items.add(new Item("Chicken", "Meat"));
+        items.add(new Item("Egg", "Dairy"));
 
         // Adapter
-        adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ItemsAdapter(this, items);
         listView.setAdapter(adapter);
 
         // Vald vara
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                addItem("Yeman");
+                addItem(adapter.getFilteredList().get(position));
             }
         });
 
@@ -82,6 +86,7 @@ public class NewItemActivity extends AppCompatActivity {
 
     }
 
+    private void addItem(Item item){
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.new_item, menu);
@@ -103,7 +108,7 @@ public class NewItemActivity extends AppCompatActivity {
 
     private void addItem(String item){
         Intent intent = new Intent(this, ShoppingListActivity.class);
-        intent.putExtra("newItem", new Item("Test", "Hej"));
+        intent.putExtra("newItem", item);
         startActivity(intent);
     }
 

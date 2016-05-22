@@ -30,7 +30,9 @@ import java.util.Locale;
 
 public class ShoppingActivity extends AppCompatActivity {
 
-    // CALLES SKIT
+    private ShoppingList shoppingList;
+    private ArrayList<Item> items;
+    private ItemsAdapter adapter;
 
     ListView lv;
     static final int check = 1111;
@@ -43,7 +45,6 @@ public class ShoppingActivity extends AppCompatActivity {
     private float last_x = 0;
     private float last_y = 0;
     private float last_z = 0;
-    ArrayList<String> shoppingList = null;
     private ShakeEventListener mSensorListener;
     private ArrayList<String> stringList;
     private MediaButtonIntentReceiver r;
@@ -51,33 +52,18 @@ public class ShoppingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
-        final ListView listview = (ListView) findViewById(R.id.listView);
-        String[] values = new String[] {
-                "Ost",
-                "Ägg",
-                "Bröd",
-                "Mjöl"
-        };
+        final ListView listView = (ListView) findViewById(R.id.listView);
 
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
-        listview.setAdapter(adapter);
+        Bundle extra = getIntent().getBundleExtra("extra");
+        items = (ArrayList<Item>) extra.getSerializable("items");
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                if(position ==0) {
-
-                }
-            }
-        });
+        // Adapter
+        adapter = new ItemsAdapter(this, items);
+        listView.setAdapter(adapter);
 
         // CALLES SKIT
 
@@ -117,52 +103,25 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         });
 
-
-
         //CheckBox vara1 = (CheckBox) findViewById(R.id.vara1Id);
         //CheckBox vara2 = (CheckBox) findViewById(R.id.vara2Id);
         //CheckBox vara3 = (CheckBox) findViewById(R.id.vara3Id);
         //CheckBox vara4 = (CheckBox) findViewById(R.id.vara4Id);
 
 
-        shoppingList = new ArrayList<>();
-        shoppingList.add(0, "Milk");
-        shoppingList.add(1, "Potatoes");
-        shoppingList.add(2, "Cottage cheese");
-        shoppingList.add(3, "Cheese");
-        CharSequence vara11 = shoppingList.get(0).toString();
-        CharSequence vara12 = shoppingList.get(1).toString();
-        CharSequence vara13 = shoppingList.get(2).toString();
-        CharSequence vara14 = shoppingList.get(3).toString();
+        ArrayList<String> callesList = new ArrayList<>();
+        callesList.add(0, "Milk");
+        callesList.add(1, "Potatoes");
+        callesList.add(2, "Cottage cheese");
+        callesList.add(3, "Cheese");
+        CharSequence vara11 = callesList.get(0).toString();
+        CharSequence vara12 = callesList.get(1).toString();
+        CharSequence vara13 = callesList.get(2).toString();
+        CharSequence vara14 = callesList.get(3).toString();
         //vara1.setText(vara11);
         //vara2.setText(vara12);
         //vara3.setText(vara13);
         //vara4.setText(vara14);
-
-    }
-
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
 
     }
 
