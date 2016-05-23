@@ -54,6 +54,7 @@ public class ShoppingActivity extends AppCompatActivity {
     private MediaButtonIntentReceiver r;
     private OnShakeListener mShakeListener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
