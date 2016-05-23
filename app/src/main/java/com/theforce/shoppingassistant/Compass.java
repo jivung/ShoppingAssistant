@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,7 +29,6 @@ public class Compass extends Activity implements SensorEventListener, Connection
     private ImageView image;
     private float currentDegree = 0f;
     private SensorManager sensorManager;
-    private float declination;
     GeomagneticField geoField;
     private Location location;
     LocationManager locationManager;
@@ -39,6 +37,7 @@ public class Compass extends Activity implements SensorEventListener, Connection
     double myLong = 0;
     double myLat = 0;
 
+    // Japan
     double endLat = 36;
     double endLng = 138;
 
@@ -79,12 +78,13 @@ public class Compass extends Activity implements SensorEventListener, Connection
         }
     };
 
+
     // Connectar till GPS.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compass);
+        setContentView(R.layout.activity_shopping);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -94,7 +94,7 @@ public class Compass extends Activity implements SensorEventListener, Connection
                     .build();
         }
 
-        image = (ImageView) findViewById(R.id.imageViewCompass);
+        image = (ImageView) findViewById(R.id.arrow);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
 
@@ -136,7 +136,7 @@ public class Compass extends Activity implements SensorEventListener, Connection
 
     }
 
-    // Initierar location objekt och geoField objekt när GPS kopplingen skapas.
+    // Initierar location objekt och geoField objekt när GPS kopplingen skapas. Permissions kan man ignorera.
 
     public void onConnected(Bundle connectionHint) {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
