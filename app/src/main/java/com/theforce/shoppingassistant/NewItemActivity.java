@@ -131,7 +131,7 @@ public class NewItemActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.alert_added_layout, null);
         dialog.setView(dialogLayout);
-       // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setTitle("Succcesfully added "+ productName);
         dialog.show();
 
