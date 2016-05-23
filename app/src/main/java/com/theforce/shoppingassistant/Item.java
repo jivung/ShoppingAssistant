@@ -6,7 +6,15 @@ public class Item implements Serializable, Cloneable {
 
     String name;
     String category;
+    String barcode = null;
     boolean isChecked;
+
+    public Item(String name, String category, String barcode){
+        this.name = name;
+        this.category = category;
+        this.barcode = barcode;
+        isChecked = false;
+    }
 
     public Item(String name, String category){
         this.name = name;
@@ -25,6 +33,10 @@ public class Item implements Serializable, Cloneable {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getBarcode(){
+        return barcode;
     }
 
     public boolean isChecked(){

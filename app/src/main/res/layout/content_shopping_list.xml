@@ -12,23 +12,37 @@
     tools:context="com.theforce.shoppingassistant.ShoppingListActivity"
     tools:showIn="@layout/activity_shopping_list">
 
+    <TextView
+        android:id="@+id/addItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+ Add item.."
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorBlack"
+        android:onClick="newItem"
+        android:background="@color/colorLightGray"
+        android:padding="17dp"
+        />
+
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="450dp"
+        android:layout_height="380dp"
         android:id="@+id/listView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:textSize="20sp"
-        android:layout_alignParentLeft="true" />
+        android:layout_below="@+id/addItem"
+        android:layout_marginTop="3dp"
+        />
 
     <Button
         style="@style/MyRoundedButton"
-        android:text="Börja handla"
+        android:text="Start shopping"
         android:id="@+id/button3"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:onClick="startShopping"
+        android:stateListAnimator="@null"
         />
 
 </RelativeLayout>

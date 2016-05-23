@@ -1,5 +1,6 @@
 package com.theforce.shoppingassistant;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,7 +34,6 @@ public class NewItemActivity extends AppCompatActivity {
     private ItemsAdapter adapter;
     private EditText searchField;
 
-    private BarcodeTranslationDatabase dtb;
     private MediaPlayer mp;
     private Toolbar toolbar;
 
@@ -51,15 +51,14 @@ public class NewItemActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.items_list);
 
         // Barcode
-        dtb = new BarcodeTranslationDatabase();
         mp = MediaPlayer.create(getApplicationContext(), R.raw.check);
 
         // Listan
         items = new ArrayList<>();
-        items.add(new Item("Milk", "Dairy"));
-        items.add(new Item("Cheese", "Dairy"));
-        items.add(new Item("Apples", "Fruit"));
-        items.add(new Item("Bananas", "Fruit"));
+        items.add(new Item("Milk", "Dairy", "7311041045084"));
+        items.add(new Item("Cheese", "Dairy", "5126521621612"));
+        items.add(new Item("Apples", "Fruit", "52154215212"));
+        items.add(new Item("Bananas", "Fruit", "613222512"));
         items.add(new Item("Chicken", "Meat"));
         items.add(new Item("Egg", "Dairy"));
 
@@ -70,7 +69,7 @@ public class NewItemActivity extends AppCompatActivity {
         // Vald vara
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                addItem(adapter.getFilteredList().get(position));
+                goBack(adapter.getFilteredList().get(position));
             }
         });
 
@@ -104,10 +103,16 @@ public class NewItemActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addItem(Item item){
-        Intent intent = new Intent(this, ShoppingListActivity.class);
-        intent.putExtra("newItem", item);
-        startActivity(intent);
+    private void goBack(Item item){
+        Intent returnIntent = new Intent();
+        //Bundle extra = new Bundle();
+        //item.print();
+        //extra.putString("test", "yoo");
+        //extra.putSerializable("item", item);
+        returnIntent.putExtra("itemName", item.getName());
+        returnIntent.putExtra("itemCategory", item.getCategory());
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
@@ -116,15 +121,19 @@ public class NewItemActivity extends AppCompatActivity {
                 mp.start();
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                System.out.println(dtb.getNameFromBarcode(contents)); //Skicka dtb.getNameFromBarcode(contents) till Mickes klass
-                showAlertAdded(dtb.getNameFromBarcode(contents));
+                showAlertAdded(searchItem(contents));
             } else if(resultCode == RESULT_CANCELED){ // Handle cancel
                 Log.i("xZing", "Cancelled");
             }
         }
     }
 
-    public void showAlertAdded(String productName){
+    public void showAlertAdded(Item item){
+
+        if(item == null){
+            finish();
+            return;
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog dialog = builder.create();
@@ -132,9 +141,8 @@ public class NewItemActivity extends AppCompatActivity {
         View dialogLayout = inflater.inflate(R.layout.alert_added_layout, null);
         dialog.setView(dialogLayout);
        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setTitle("Succcesfully added "+ productName);
+        dialog.setTitle("Succcesfully added "+ item.getName());
         dialog.show();
-
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -157,10 +165,23 @@ public class NewItemActivity extends AppCompatActivity {
             public void run() {
                 dialog.dismiss(); // when the task active then close the dialog
                 t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+                finish();
             }
-        }, 1500); // after 2 second (or 2000 miliseconds), the task will be active.
+        }, 5000); // after 2 second (or 2000 miliseconds), the task will be active.
 
 
+    }
+
+    private Item searchItem(String barcode){
+        System.out.println(barcode);
+        for(Item item : items){
+            if(item.getBarcode() != null) {
+                if (item.getBarcode().equals(barcode)) {
+                     return item;
+                }
+            }
+        }
+        return null;
     }
 
 

@@ -1,5 +1,6 @@
 package com.theforce.shoppingassistant;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,53 +27,52 @@ public class ShoppingListActivity extends AppCompatActivity {
         // TEST
         shoppingList = new ShoppingList<>();
         items = shoppingList.getList();
-        items.add(new Item("+ Add new item..", ""));
         items.add(new Item("Milk", "Dairy"));
-        items.add(new Item("Cheese", "Dairy"));
+        /*items.add(new Item("Cheese", "Dairy"));
         items.add(new Item("Apples", "Fruit"));
-        //items.add(new Item("Bananas", "Fruit"));
-        //items.add(new Item("Chicken", "Meat"));
-        //items.add(new Item("Egg", "Dairy"));
+        items.add(new Item("Bananas", "Fruit"));
+        items.add(new Item("Chicken", "Meat"));
+        items.add(new Item("Egg", "Dairy"));
+        items.add(new Item("Bananas", "Fruit"));
+        items.add(new Item("Chicken", "Meat"));
+        items.add(new Item("Egg", "Dairy"));*/
 
         // Adapter
         adapter = new ItemsAdapter(this, R.layout.list_item, items);
         listView.setAdapter(adapter);
 
-        // Lägg till ny vara
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                if(position ==0) {
-                    newItem();
-                }
-            }
-        });
-
     }
 
-    protected void onResume() {
-        super.onResume();
-        if(getIntent().hasExtra("newItem")){
-            Item newItem = (Item) getIntent().getSerializableExtra("newItem");
-            items.add(newItem);
-            adapter.notifyDataSetChanged();
-        }
-        for(Item item : items){
-            item.print();
-        }
-    }
-
-    public void newItem(){
+    public void newItem(View view){
         Intent intent = new Intent(this, NewItemActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     public void startShopping(View view){
         Intent intent = new Intent(this, ShoppingActivity.class);
         Bundle extra = new Bundle();
-        items.remove(0);
         extra.putSerializable("items", items);
         intent.putExtra("extra", extra);
         startActivity(intent);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String itemName = data.getStringExtra("itemName");
+                String itemCategory = data.getStringExtra("itemCategory");
+                Item item = new Item(itemName, itemCategory);
+                items.add(item);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
+
 
 }

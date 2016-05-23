@@ -27,14 +27,16 @@
         android:id="@+id/search_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Skriv in din vara"
-        android:inputType="text" />
+        android:hint="Search item"
+        android:inputType="text"
+        />
 
     <ListView
         android:id="@+id/items_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_field"
+        android:layout_marginBottom="5dp"
         />
 
 </RelativeLayout>

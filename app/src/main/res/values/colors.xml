@@ -6,4 +6,5 @@
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#7A7A7A</color>
     <color name="actionBarPrimary">#168b87</color>
+    <color name="colorLightGray">#EBEBEB</color>
 </resources>
