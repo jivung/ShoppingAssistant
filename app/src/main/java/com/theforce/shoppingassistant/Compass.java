@@ -177,7 +177,7 @@ public class Compass extends Activity implements SensorEventListener, Connection
         //  float azimuth = Math.round(event.values[0]);
         // azimuth = (float) Math.toDegrees(orientation[0]);
 
-        //heading += geoField.getDeclination();
+        heading += geoField.getDeclination();
         heading = (heading + 360) % 360;
         heading -= bearing(myLat, myLong, endLat, endLng);
 
