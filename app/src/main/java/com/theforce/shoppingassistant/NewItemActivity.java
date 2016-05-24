@@ -55,12 +55,54 @@ public class NewItemActivity extends AppCompatActivity {
 
         // Listan
         items = new ArrayList<>();
-        items.add(new Item("Milk", "Dairy", "7311041045084"));
-        items.add(new Item("Cheese", "Dairy", "5126521621612"));
-        items.add(new Item("Apples", "Fruit", "52154215212"));
-        items.add(new Item("Bananas", "Fruit", "613222512"));
-        items.add(new Item("Chicken", "Meat"));
+        items.add(new Item("Apple", "Fruit and Vegetables"));
+        items.add(new Item("Banana", "Fruit and Vegetables"));
+        items.add(new Item("Salad", "Fruit and Vegetables"));
+        items.add(new Item("Tomato", "Fruit and Vegetables"));
+        items.add(new Item("Cucumber", "Fruit and Vegetables"));
+        items.add(new Item("Mango", "Fruit and Vegetables"));
+        items.add(new Item("Pineapple", "Fruit and Vegetables"));
+        items.add(new Item("Carrot", "Fruit and Vegetables"));
+        items.add(new Item("Onion", "Fruit and Vegetables"));
+        items.add(new Item("Garlic", "Fruit and Vegetables"));
+        items.add(new Item("Potatos", "Fruit and Vegetables"));
+        items.add(new Item("Avocado", "Fruit and Vegetables"));
+        items.add(new Item("Pear", "Fruit and Vegetables"));
+        items.add(new Item("Apricot", "Fruit and Vegetables"));
+        items.add(new Item("Asparagus", "Fruit and Vegetables"));
+        items.add(new Item("Aubergine", "Fruit and Vegetables"));
+        items.add(new Item("Milk", "Dairy"));
         items.add(new Item("Egg", "Dairy"));
+        items.add(new Item("Butter", "Dairy"));
+        items.add(new Item("Cheese", "Dairy"));
+        items.add(new Item("Yogurt", "Dairy"));
+        items.add(new Item("Cream cheese", "Dairy"));
+        items.add(new Item("Kvarg", "Dairy"));
+        items.add(new Item("Cream", "Dairy"));
+        items.add(new Item("Cottage Cheese", "Dairy"));
+        items.add(new Item("Bagel", "Bread"));
+        items.add(new Item("Tortilla", "Bread"));
+        items.add(new Item("Muffin", "Bakery"));
+        items.add(new Item("Beef", "Charcuterie"));
+        items.add(new Item("Ground Beef", "Charcuterie"));
+        items.add(new Item("Lard", "Charcuterie"));
+        items.add(new Item("Bacon", "Charcuterie"));
+        items.add(new Item("Pork", "Charcuterie"));
+        items.add(new Item("Ham", "Charcuterie"));
+        items.add(new Item("Smoked Ham", "Charcuterie"));
+        items.add(new Item("Bratwurst", "Charcuterie"));
+        items.add(new Item("Chorizo", "Charcuterie"));
+        items.add(new Item("Hot dog", "Charcuterie"));
+        items.add(new Item("Blood sausage", "Charcuterie"));
+        items.add(new Item("Salami", "Charcuterie"));
+        items.add(new Item("Meat ball", "Charcuterie"));
+        items.add(new Item("Rohwurst", "Charcuterie"));
+        items.add(new Item("Pasta", "Dry"));
+        items.add(new Item("Sugar", "Dry"));
+        items.add(new Item("Cereal", "Dry"));
+        items.add(new Item("Rice", "Dry"));
+        items.add(new Item("Coffee", "Dry", "7340083409721"));
+        items.add(new Item("Dressing", "Sauces", "7311440052157"));
 
         // Adapter
         adapter = new ItemsAdapter(this, R.layout.list_item, items);
@@ -97,18 +139,14 @@ public class NewItemActivity extends AppCompatActivity {
                 Intent intent = new Intent("com.google.zxing.client.android.SCAN");
                 intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
                 startActivityForResult(intent, 0);
-                Log.d("test", "Inne i switch");
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void goBack(Item item){
+        item.print();
         Intent returnIntent = new Intent();
-        //Bundle extra = new Bundle();
-        //item.print();
-        //extra.putString("test", "yoo");
-        //extra.putSerializable("item", item);
         returnIntent.putExtra("itemName", item.getName());
         returnIntent.putExtra("itemCategory", item.getCategory());
         setResult(Activity.RESULT_OK,returnIntent);
@@ -141,7 +179,6 @@ public class NewItemActivity extends AppCompatActivity {
         View dialogLayout = inflater.inflate(R.layout.alert_added_layout, null);
         dialog.setView(dialogLayout);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setTitle("Succcesfully added "+ productName);
         dialog.show();
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -160,15 +197,15 @@ public class NewItemActivity extends AppCompatActivity {
             }
         });
 
+        final Item backItem = item;
         final Timer t = new Timer();
         t.schedule(new TimerTask() {
             public void run() {
                 dialog.dismiss(); // when the task active then close the dialog
                 t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
-                finish();
+                goBack(backItem);
             }
-        }, 5000); // after 2 second (or 2000 miliseconds), the task will be active.
-
+        }, 3500); // after 2 second (or 2000 miliseconds), the task will be active.
 
     }
 
@@ -183,6 +220,5 @@ public class NewItemActivity extends AppCompatActivity {
         }
         return null;
     }
-
 
 }

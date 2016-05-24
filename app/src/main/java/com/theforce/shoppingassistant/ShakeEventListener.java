@@ -16,7 +16,11 @@ public class ShakeEventListener implements SensorEventListener{
     private static final int MAX_PAUSE_BETHWEEN_DIRECTION_CHANGE = 200;
 
     /** Maximum allowed time for shake gesture. */
-    private static final int MAX_TOTAL_DURATION_OF_SHAKE = 400;
+    private static final int MAX_TOTAL_DURATION_OF_SHAKE = 300;
+
+    /** Minimum time between two consecutive shakes. */
+    private static final int MIN_TIME_BETWEEN_SHAKES = 1000;
+
     /** Time when the gesture started. */
     private long mFirstDirectionChangeTime = 0;
 
@@ -38,6 +42,8 @@ public class ShakeEventListener implements SensorEventListener{
     /** OnShakeListener that is called when shake is detected. */
     private OnShakeListener mShakeListener;
 
+    private long lastShakeTime;
+
     /**
      * Interface for shake gesture.
      */
@@ -53,6 +59,9 @@ public class ShakeEventListener implements SensorEventListener{
     }
     @Override
     public void onSensorChanged(SensorEvent se) {
+
+
+
         // get sensor data
         float x = se.values[0];
         float y = se.values[1];
@@ -91,7 +100,10 @@ public class ShakeEventListener implements SensorEventListener{
                     // check total duration
                     long totalDuration = now - mFirstDirectionChangeTime;
                     if (totalDuration < MAX_TOTAL_DURATION_OF_SHAKE) {
-                        mShakeListener.onShake();
+                        if(now-lastShakeTime > MIN_TIME_BETWEEN_SHAKES) {
+                            mShakeListener.onShake();
+                        }
+                        lastShakeTime = now;
                         resetShakeParameters();
                     }
                 }

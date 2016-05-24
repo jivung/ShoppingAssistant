@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
@@ -52,27 +53,21 @@ public class ItemsAdapter extends ArrayAdapter<Item> implements Filterable{
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data list_item for this position
-        Item item = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
+        final Item item = getItem(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
         }
-        // Lookup view for data population
         TextView itemName = (TextView) convertView.findViewById(R.id.itemName);
         TextView itemCategory = (TextView) convertView.findViewById(R.id.itemCategory);
-        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
-        // Populate the data into the template view using the data object
+        final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
+        if(checkBox != null) {
+            checkBox.setChecked(item.isChecked);
+        }
         itemName.setText(item.getName());
         itemCategory.setText(item.getCategory());
-        if(checkBox != null){
-            checkBox.setChecked(item.isChecked());
-        }
-        // Return the completed view to render on screen
         return convertView;
     }
 
-    @Override
     public Filter getFilter() {
         if (itemFilter == null) {
             itemFilter = new ItemFilter();
@@ -144,8 +139,6 @@ public class ItemsAdapter extends ArrayAdapter<Item> implements Filterable{
             });
             view.startAnimation(animation);
         }
-
-
 
     }
 

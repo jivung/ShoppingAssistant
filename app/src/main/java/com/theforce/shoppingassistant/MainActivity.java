@@ -1,5 +1,7 @@
 package com.theforce.shoppingassistant;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         //set content view AFTER ABOVE sequence (to avoid crash)
         setContentView(R.layout.activity_main);
 
-        // CALLE WAS HERE
-
     }
 
     @Override
@@ -57,6 +57,18 @@ public class MainActivity extends AppCompatActivity {
     public void newShoppingList(View view){
         Intent intent = new Intent(this, ShoppingListActivity.class);
         startActivity(intent);
+    }
+
+    public void myLists(View view){
+        new AlertDialog.Builder(this)
+                .setMessage("Not implemented in this prototype.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }

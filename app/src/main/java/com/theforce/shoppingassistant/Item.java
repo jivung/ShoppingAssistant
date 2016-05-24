@@ -48,7 +48,7 @@ public class Item implements Serializable, Cloneable {
     }
 
     public void print(){
-        System.out.println(name + " - " + category);
+        System.out.println(name + " - " + category + " - " + isChecked);
     }
 
 
